@@ -6,118 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Dungeon game</title>
-    <style>
-        body {
-            outline-style: double;
-            background-color : black;
-            color: red;
-            
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        p {
-            text-align: center;
-
-            color: red;
-            
-        }
-
-        #battle {
-           
-            text-align: left;
-            margin-left: 500px;
-            margin-top: 100px;
-        }
-
-        #button {
-            text-align: center;
-            margin-left: 680px;           
-        }
-    </style>
+    <link rel="stylesheet" href="dungeon-style.css">
 </head>
 
 <body>
-    <script>
-        let score = 0
-        let health = 20
-        let list=[]
-        let count =0;
-        function alerting (){
-
-            alert('Stronger enemies are coming')
-        }
-        function leveling (level){
-            let varible= 0
-
-            if (level<1000){
-
-                varible= 1
-            }else {
-                varible = 2
-            }
-return varible;
-        }
-        function heal(healing) {
-            if (healing+5>=20){
-                healing=20 
-            }else{
-                healing+=5;
-            }
-           return healing;
-        }
-        function game() {
-            
-            let result = ''
-            let basicEnemies = ['rat', 'wolf', 'orc', 'bat', 'zombie',  'bear', 'zombie bear', 'drawf', 'goblin', 'giant',  'giant bat', 'spider', 'unicorn', 'lizard', 'pack of wolves', 'ice giant', 'troll','heal', 'heal']
-            let specialEnemies =['Boiko Borisov', 'Slavi Trifonov', "Godji", "Azis", "Alien", "walking dead", "white walker", "Donald Trump", "Bill Gates", "werewolf", "vampire", "lapricone", "dragon", "pack of dragons", "Sauron", 'heal', 'Chuck Norris', "Kenny from South park", "Godzilla", "reptile", "demon", "group of demons", "predator", 'heal'] 
-            let enemy = basicEnemies[Math.floor(Math.random() * basicEnemies.length)]
-            if (leveling(score)>1){
-                enemy=specialEnemies[Math.floor(Math.random() * specialEnemies.length)]
-            }
-            let advesery = ''
-            if (health > 0 && enemy !== 'heal') {
-                result = "win"
-                score += Math.floor(Math.random() * 101);
-                advesery = "You killed a " + enemy
-                health -= 1;
-                document.getElementById("button").setAttribute("value", "Carry On")
-                list.push(enemy)
-            } else if(health>0 && enemy==='heal'){
-
-                health = heal(health);
-                result = 'healed'
-            }else{
-                result = "lost"
-                let listAsString = list.join(', ');
-                document.getElementById("button").setAttribute("onclick", "location.reload()")
-                document.getElementById("button").setAttribute("value", "Farewell")
-                advesery = "You are killed by a " + enemy + "<br>"+ "You killed: "+ listAsString;
-            }
-            if(leveling(score)>1 && count === 0)
-            {
-                alerting()
-                count=1;
-            }
-               document.getElementById("intro").innerHTML= "You: " + result + "<br>" + advesery  
-            
-           
-            document.getElementById("battle").innerHTML = 'You have ' +' ' + score + 'gold' +  
-                '<br>' + 'Health: ' + health
-           
-                
-        }
-    </script>
     
-        <h1>The Dungeon game</h1>
-        <h1><img src="https://cdn.pixabay.com/photo/2017/12/10/03/38/dragon-3009174_960_720.png" alt="dragon" width="300" height="200"> </h1>
-
-        <p id='intro'>Welcome to the dungeon. Walk in to start your adventure.</p>
-        <p id="battle"></p> <br>
-        <form><input type="button" id="button" value='Enter the dungeon' onclick="game()"></form>
-    
+    <h1>The Dungeon game</h1>
+    <h1><img src="https://cdn.pixabay.com/photo/2017/12/10/03/38/dragon-3009174_960_720.png" alt="dragon" width="300"
+            height="200"> </h1>
+    <p id='level'></p>
+    <br>
+    <p id='intro'>Welcome to the dungeon. Walk in to start your adventure.</p>
+    <p id="battle"></p> <br><p id ="merch"></p>
+    <form><input type="button" id="button" value='Enter the dungeon' onclick="game()"></form>
+    <script src="dungeon.js"></script>
 </body>
 
 </html>
