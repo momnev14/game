@@ -5,6 +5,7 @@ let hero = {
     score: 0,
     attack: 3,
     points: 0,
+    apples: 0,
     poisoned: false // still under development
 }
 let list = []
@@ -23,6 +24,7 @@ function buy() {
 
     }
     document.getElementById('merch').innerHTML = ''
+
 }
 
 function improveWeapon() {
@@ -34,6 +36,23 @@ function improveWeapon() {
     } else {
 
     }
+    document.getElementById('merch').innerHTML = ''
+
+}
+
+function quest() {
+    let applesNeeded = Math.floor(Math.random() * 3);
+   alert(`The king needs ${applesNeeded} apples!`)
+    if (hero.apples >= applesNeeded) {
+        alert(`The king is pleased!`)
+
+        hero.score += 500;
+        hero.apples -= applesNeeded;
+
+    }else {
+        alert ('You dont have enough apples!')
+    }
+
     document.getElementById('merch').innerHTML = ''
 }
 // leveling up system
@@ -77,7 +96,7 @@ function leveling(level) {
 //fighting system 
 function battle(x) {
 
-    if (x.attack >= hero.health && x.name !== 'potion' && x.name !== 'treasure' && x.name !== "stronger weapon" && x.name !== "Merchant" && x.name !== "Blacksmith") {
+    if (x.attack >= hero.health && x.name !== 'potion' && x.name !== 'treasure' && x.name !== "stronger weapon" && x.name !== "Merchant" && x.name !== "Blacksmith" && x.name != "King") {
         hero.health = 0;
     } else if (x.name === 'potion') {
         if (hero.health + x.health >= 100) {
@@ -91,9 +110,12 @@ function battle(x) {
     } else if (x.name === 'stronger weapon') {
         hero.attack += Number(x.attack);
     } else if (x.name === 'Merchant') {
-        //under development
+        document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
     } else if (x.name === "Blacksmith") {
-        //under development
+        document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="improveWeapon()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+    } else if (x.name == "King") {
+
+        document.getElementById('merch').innerHTML = `<input type="button" value="Accept the quest" onclick="quest()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
     }
     else {
         for (let index = 0; index < x.health; index++) {
@@ -102,6 +124,7 @@ function battle(x) {
             if (x.health <= 0) {
                 hero.score += Number(x.gold);
                 hero.points += x.points;
+                hero.apples += x.apples;
                 break;
             }
             if (hero.health <= 0) {
@@ -123,21 +146,24 @@ function enemy() {
         health: 2,
         gold: 5,
         attack: 1,
-        points: 1
+        points: 1,
+        apples: Math.floor(Math.random() * 6)
     }
     const troll = {
         name: 'troll',
         health: 3,
         gold: 8,
         attack: 3,
-        points: 2
+        points: 2,
+        apples: Math.floor(Math.random() * 6)
     }
     const bat = {
         name: 'bat',
         health: 2,
         gold: 6,
         attack: 2,
-        points: 2
+        points: 2,
+        apples: Math.floor(Math.random() * 6)
     }
 
     const goblin = {
@@ -145,7 +171,8 @@ function enemy() {
         health: 3,
         gold: 6,
         attack: 3,
-        points: 2
+        points: 2,
+        apples: Math.floor(Math.random() * 6)
     }
     const orc = {
         name: 'orc',
@@ -153,21 +180,54 @@ function enemy() {
         gold: 6,
         attack: 4,
         points: 2,
+        apples: Math.floor(Math.random() * 6)
     }
     const zombie = {
         name: 'zombie',
         health: 3,
         gold: 3,
         attack: 3,
-        points: 2
+        points: 2,
+        apples: Math.floor(Math.random() * 6)
     }
+    const bear = {
+        name: 'bear',
+        health: 6,
+        gold: 5,
+        attack: 3,
+        points: 3,
+        apples: Math.floor(Math.random() * 6)
+
+    }
+    const wolf = {
+        name: 'wolf',
+        health: 5,
+        gold: 5,
+        attack: 3,
+        points: 3,
+        apples: Math.floor(Math.random() * 6)
+
+    }
+    const spider = {
+        name: "spider",
+        health: 2,
+        gold: 3,
+        attack: 2,
+        points: 3,
+        apples: Math.floor(Math.random() * 10)
+        
+    }
+
+
     //stronger monsters (level 3)
     const golem = {
         name: 'golem',
         health: 10,
         gold: 10,
         attack: 9,
-        points: 5
+        points: 5,
+        apples: Math.floor(Math.random() * 10)
+
     }
     const werewolf = {
         name: 'werewolf',
@@ -175,7 +235,9 @@ function enemy() {
         gold: 15,
         attack: 10,
         points: 7,
-        poison: true
+        poison: true,
+        apples: Math.floor(Math.random() * 10),
+        
     }
     const vampire = {
         name: 'vampire',
@@ -183,7 +245,8 @@ function enemy() {
         gold: 25,
         attack: 19,
         points: 10,
-        poison: true
+        poison: true,
+        apples: Math.floor(Math.random() * 6)
     }
     const whiteWalker = {
         name: "White walker",
@@ -191,14 +254,16 @@ function enemy() {
         gold: 35,
         attack: 22,
         points: 15,
-        poison: true
+        poison: true,
+        apples: Math.floor(Math.random() * 6)
     }
     const strongerZombie = {
         name: "zombie",
         health: 15,
         gold: 20,
         points: 12,
-        attack: 18
+        attack: 18,
+        apples: Math.floor(Math.random() * 10)
     }
     const scorpio = {
         name: "Giant scorpio",
@@ -206,9 +271,49 @@ function enemy() {
         gold: 22,
         attack: 18,
         points: 12,
-        poison: true
+        poison: true,
+        apples: Math.floor(Math.random() * 10)
 
     }
+    const packOfWolves = {
+
+        name: "pack of wolves",
+        health: 18,
+        gold: 23,
+        attack: 15,
+        points: 23,
+        apples: Math.floor(Math.random() * 10)
+    }
+    const giant = {
+        name: "giant",
+        health: 20,
+        attack: 15,
+        points: 15,
+        gold: 12,
+        apples: Math.floor(Math.random() * 10)
+    }
+
+    const drawf = {
+        name: "drawf",
+        health: 15,
+        attack: 9,
+        points: 9,
+        gold: 11,
+        apples: Math.floor(Math.random() * 10)
+
+
+
+    }
+    const giantRat = {
+
+        name: "Rat King",
+        health: 17,
+        attack: 14,
+        points: 15,
+        gold: 25,
+        apples: Math.floor(Math.random() * 10)
+    }
+
     //famous people and legendary monsters (level 5)
     const boyko = {
         name: 'Boiko Borisov',
@@ -290,7 +395,7 @@ function enemy() {
         name: 'treasure',
         gold: 50
     }
-    // NPCs (this section is still under development)
+    // NPCs 
     const merchant = {
         name: "Merchant",
         health: 10,
@@ -298,18 +403,18 @@ function enemy() {
     }
     const blacksmith = {
         name: "Blacksmith",
-        attack: 5,
+        attack: 10,
         price: 70
     }
-    const questGiver = {
+    const questGiver = {//(this one is still under development)
         name: "King",
         prize: 150
 
     }
-    let level1Enemies = [rat, bat, troll, potion, weapon]
-    let level2Enemies = [goblin, troll, bat, potion, treasure, weapon, merchant]
-    let level3Enemies = [werewolf, orc, scorpio, potion, blacksmith, merchant, treasure, weapon]
-    let level4Enemies = [golem, vampire, whiteWalker, strongerZombie, scorpio, potion, treasure, merchant, weapon, blacksmith]
+    let level1Enemies = [rat, bat, troll, wolf, spider, potion, weapon]
+    let level2Enemies = [goblin, troll, bat, potion, treasure, weapon, merchant, zombie, bear, rat]
+    let level3Enemies = [werewolf, orc, scorpio, potion, blacksmith, merchant, treasure, weapon, zombie, giant, drawf]
+    let level4Enemies = [golem, vampire, whiteWalker, strongerZombie, scorpio, potion, treasure, merchant, weapon, blacksmith, packOfWolves, drawf, giantRat, werewolf, questGiver]
     let level5Enemies = [boyko, azis, trump, obama, mercury, potion, treasure, weapon, dragon, ktulu, demon, sauron, merchant, blacksmith]
     let value = {}
     if ((leveling(hero.points) === 1)) {
@@ -333,7 +438,7 @@ function game() { // this function is the link to the HTML file
     let status = enemy()
     let result = ''
     let advesery = ''
-    if (hero.health > 0 && status !== 'treasure' && status !== 'potion' && status !== "stronger weapon" && status !== 'Merchant' && status !== 'Blacksmith') {
+    if (hero.health > 0 && status !== 'treasure' && status !== 'potion' && status !== "stronger weapon" && status !== 'Merchant' && status !== 'Blacksmith' && status !== "King") {
 
         result = "win"
 
@@ -354,15 +459,22 @@ function game() { // this function is the link to the HTML file
         result = "are getting stronger"
         advesery = "You found a " + status
     } else if (hero.health > 0 && status === 'Merchant') {
-        advesery = "You met a " + status
-        document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+        result = " met a " + status
+        // document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
 
     } else if (hero.health > 0 && status === 'Blacksmith') {
 
-        advesery = "You met a " + status
-        document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="improveWeapon()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+        result = " met a " + status
+        //   document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="improveWeapon()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+    } else if (hero.health === 100 && status === "Merchant") {
+
+        result = " are going deeper in the dungeon..."
+    } else if (hero.health > 0 && status === "King") {
+
+        result = " met a " + status
     }
-    else {
+    else if (hero.health <= 0) {
+        hero.health = 0
         result = "lost"
         let listAsString = list.join(', ');
         document.getElementById("button").setAttribute("onclick", "location.reload()")
@@ -377,4 +489,6 @@ function game() { // this function is the link to the HTML file
         '<br>' + 'Health: ' + hero.health + " "
 
     document.getElementById('level').innerHTML = 'Your level: ' + leveling(hero.points) + "<br>" + "Your attack: " + hero.attack
+    + "<br>"+ "You have: " + hero.apples + " apples"
+
 }
