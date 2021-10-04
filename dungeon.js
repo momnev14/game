@@ -1,6 +1,8 @@
 //initial hero stats
+
+
 let hero = {
-    name: 'hero',
+    name: '',
     health: 100,
     score: 0,
     attack: 3,
@@ -8,8 +10,9 @@ let hero = {
     apples: 0,
     poisoned: false // still under development
 }
-let list = []
 
+let list = []
+let count = 0;
 //buy stuff
 function buy() {
     if (hero.score - 50 >= 0) {
@@ -36,23 +39,25 @@ function improveWeapon() {
     } else {
 
     }
+
     document.getElementById('merch').innerHTML = ''
 
 }
 
 function quest() {
-    let applesNeeded = Math.floor(Math.random() * 3);
+   
+    let applesNeeded = Math.floor(Math.random() * 101)+ 1;
    alert(`The king needs ${applesNeeded} apples!`)
     if (hero.apples >= applesNeeded) {
-        alert(`The king is pleased!`)
+        alert(`The king is pleased, ${hero.name} !`)
 
         hero.score += 500;
         hero.apples -= applesNeeded;
-
+count = 1;
     }else {
-        alert ('You dont have enough apples!')
+        alert (`You don't have enough apples, ${hero.name}!`)
     }
-
+    
     document.getElementById('merch').innerHTML = ''
 }
 // leveling up system
@@ -87,9 +92,20 @@ function leveling(level) {
     } else if (level <= 410) {// level 10
 
         varible = 10
-    } else if (level > 410) {// level 11
+    } else if ( level<= 500) {// level 11
 
         varible = 11
+    }else if ( level<600){// level 12
+
+variable =12
+
+    }else if (level <= 700){ // level 13
+
+variable = 13
+
+    }else if (level> 700){ // level 14
+
+        variable = 14
     }
     return varible;
 }
@@ -110,10 +126,15 @@ function battle(x) {
     } else if (x.name === 'stronger weapon') {
         hero.attack += Number(x.attack);
     } else if (x.name === 'Merchant') {
-        document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+        if (hero.health === 100){
+
+        }else {
+            document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+        }
+       
     } else if (x.name === "Blacksmith") {
         document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="improveWeapon()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
-    } else if (x.name == "King") {
+    } else if (x.name === "King" && count === 0) {
 
         document.getElementById('merch').innerHTML = `<input type="button" value="Accept the quest" onclick="quest()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
     }
@@ -124,7 +145,11 @@ function battle(x) {
             if (x.health <= 0) {
                 hero.score += Number(x.gold);
                 hero.points += x.points;
-                hero.apples += x.apples;
+                if (x.hasOwnProperty('apples')){
+                 hero.apples += x.apples;  
+             }
+                
+               
                 break;
             }
             if (hero.health <= 0) {
@@ -147,7 +172,8 @@ function enemy() {
         gold: 5,
         attack: 1,
         points: 1,
-        apples: Math.floor(Math.random() * 6)
+        apples: Math.floor(Math.random() * 6),
+        picture: 'https://i.pinimg.com/564x/c5/ea/24/c5ea242b36434b79d5fa9256b6a290ee.jpg'
     }
     const troll = {
         name: 'troll',
@@ -362,23 +388,23 @@ function enemy() {
         name: "Ktulu",
         health: 250,
         gold: 900,
-        attack: 80,
+        attack: 40,
         points: 80,
         poison: true
 
     }
     const demon = {
         name: "Demon",
-        health: 200,
+        health: 40,
         gold: 350,
         attack: 70,
         points: 70
     }
     const sauron = {
         name: "Sauron",
-        health: 500,
+        health: 50,
         gold: 1000,
-        attack: 150,
+        attack: 60,
         points: 200
     }
     //items
@@ -406,15 +432,15 @@ function enemy() {
         attack: 10,
         price: 70
     }
-    const questGiver = {//(this one is still under development)
+    const questGiver = {
         name: "King",
         prize: 150
 
     }
     let level1Enemies = [rat, bat, troll, wolf, spider, potion, weapon]
     let level2Enemies = [goblin, troll, bat, potion, treasure, weapon, merchant, zombie, bear, rat]
-    let level3Enemies = [werewolf, orc, scorpio, potion, blacksmith, merchant, treasure, weapon, zombie, giant, drawf]
-    let level4Enemies = [golem, vampire, whiteWalker, strongerZombie, scorpio, potion, treasure, merchant, weapon, blacksmith, packOfWolves, drawf, giantRat, werewolf, questGiver]
+    let level3Enemies = [werewolf, orc, scorpio, potion, blacksmith, merchant, treasure, weapon, zombie, giant, drawf, questGiver]
+    let level4Enemies = [golem, vampire, whiteWalker, strongerZombie, scorpio, potion, treasure, merchant, weapon, blacksmith, packOfWolves, drawf, giantRat, werewolf ]
     let level5Enemies = [boyko, azis, trump, obama, mercury, potion, treasure, weapon, dragon, ktulu, demon, sauron, merchant, blacksmith]
     let value = {}
     if ((leveling(hero.points) === 1)) {
@@ -435,6 +461,8 @@ function enemy() {
     return value['name'];
 }
 function game() { // this function is the link to the HTML file
+    hero.name= document.getElementById('hero').value
+    document.getElementById('hero').setAttribute("type", "hidden")
     let status = enemy()
     let result = ''
     let advesery = ''
@@ -442,7 +470,7 @@ function game() { // this function is the link to the HTML file
 
         result = "win"
 
-        advesery = "You killed a " + status
+        advesery = "You killed a " + status 
 
         document.getElementById("button").setAttribute("value", "Carry On")
         list.push(status)
@@ -458,14 +486,14 @@ function game() { // this function is the link to the HTML file
 
         result = "are getting stronger"
         advesery = "You found a " + status
-    } else if (hero.health > 0 && status === 'Merchant') {
+    } else if (hero.health > 0&& hero.health<100 && status === 'Merchant') {
         result = " met a " + status
-        // document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="buy()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+       
 
-    } else if (hero.health > 0 && status === 'Blacksmith') {
+    } else if (hero.health > 0  && status === 'Blacksmith') {
 
         result = " met a " + status
-        //   document.getElementById('merch').innerHTML = `<input type="button" value="buy" onclick="improveWeapon()">` + `<input type="button" value="no, thanks" onclick="document.getElementById('merch').innerHTML=''">`
+      
     } else if (hero.health === 100 && status === "Merchant") {
 
         result = " are going deeper in the dungeon..."
@@ -488,7 +516,7 @@ function game() { // this function is the link to the HTML file
     document.getElementById("battle").innerHTML = 'You have ' + ' ' + hero.score + 'gold' +
         '<br>' + 'Health: ' + hero.health + " "
 
-    document.getElementById('level').innerHTML = 'Your level: ' + leveling(hero.points) + "<br>" + "Your attack: " + hero.attack
+    document.getElementById('level').innerHTML = `Greetings, ${hero.name}!` +"<br>"+'Your level: ' + leveling(hero.points) + "<br>" + "Your attack: " + hero.attack
     + "<br>"+ "You have: " + hero.apples + " apples"
 
 }
